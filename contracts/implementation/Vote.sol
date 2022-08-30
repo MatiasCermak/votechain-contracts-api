@@ -12,11 +12,13 @@ contract Vote is Ownable {
         options = _options;
     }
 
-    function castVote(string memory voterCode, string memory option) public onlyOwner {
-        require(_isValidOption(option), "Vote: Value sent is not an Option");
-        require(!_hasVoted(voterCode), "Vote: Voter has already voted");
+    function castVote(string memory voterCode, string memory option) public onlyOwner returns(string memory){
+
+        if(!_isValidOption(option)) return "Vote: Value sent is not an Option";
+        if(_hasVoted(voterCode)) return "Vote: Voter has already voted";
         votes[voterCode] = option;
-        voteCount[option]++;
+        voteCount[option] = voteCount[option] + 1;
+        return "Vote: Vote registered succesfully";
     }
 
     function _isValidOption(string memory option) internal view returns(bool){
