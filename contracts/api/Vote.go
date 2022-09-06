@@ -201,6 +201,37 @@ func (_Api *ApiTransactorRaw) Transact(opts *bind.TransactOpts, method string, p
 	return _Api.Contract.contract.Transact(opts, method, params...)
 }
 
+// GetOptions is a free data retrieval call binding the contract method 0xcc2ee196.
+//
+// Solidity: function getOptions() view returns(string[])
+func (_Api *ApiCaller) GetOptions(opts *bind.CallOpts) ([]string, error) {
+	var out []interface{}
+	err := _Api.contract.Call(opts, &out, "getOptions")
+
+	if err != nil {
+		return *new([]string), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]string)).(*[]string)
+
+	return out0, err
+
+}
+
+// GetOptions is a free data retrieval call binding the contract method 0xcc2ee196.
+//
+// Solidity: function getOptions() view returns(string[])
+func (_Api *ApiSession) GetOptions() ([]string, error) {
+	return _Api.Contract.GetOptions(&_Api.CallOpts)
+}
+
+// GetOptions is a free data retrieval call binding the contract method 0xcc2ee196.
+//
+// Solidity: function getOptions() view returns(string[])
+func (_Api *ApiCallerSession) GetOptions() ([]string, error) {
+	return _Api.Contract.GetOptions(&_Api.CallOpts)
+}
+
 // GetVote is a free data retrieval call binding the contract method 0xbaa40e5c.
 //
 // Solidity: function getVote(string voterCode) view returns(string)
