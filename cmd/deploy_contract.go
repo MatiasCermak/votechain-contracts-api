@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/ecdsa"
+	"flag"
 	"fmt"
 	"math/big"
 
@@ -13,7 +14,17 @@ import (
 )
 
 func main() {
-	client, err := ethclient.Dial("http://votechain.ddns.net:8545/")
+	redlocal := flag.Bool("local",false,"Deploying from inside network")
+	flag.Parse()
+
+	net := ""
+
+	if *redlocal{
+		net = "http://192.168.1.200:8545"
+	}else{
+		net = "http://votechain.ddns.net:8545/"
+	}
+	client, err := ethclient.Dial(net)
 	if err != nil {
 		panic(err)
 	}

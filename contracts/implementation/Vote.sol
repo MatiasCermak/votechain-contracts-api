@@ -15,16 +15,14 @@ contract Vote is Ownable {
     function castVote(string memory voterCode, string memory option)
         public
         onlyOwner
-        returns (string memory)
     {
-        if (!_isValidOption(option)) return "Vote: Value sent is not an Option";
-        if (_hasVoted(voterCode)) return "Vote: Voter has already voted";
+        require(isValidOption(option), "Vote: Value sent is not an Option");
+        require(!hasVoted(voterCode), "Vote: Voter has already voted");
         votes[voterCode] = option;
         voteCount[option] = voteCount[option] + 1;
-        return "Vote: Vote registered succesfully";
     }
 
-    function _isValidOption(string memory option) internal view returns (bool) {
+    function isValidOption(string memory option) public view returns (bool) {
         for (uint8 i = 0; i < options.length; i++) {
             if (keccak256(bytes(options[i])) == keccak256(bytes(option))) {
                 return true;
@@ -33,7 +31,7 @@ contract Vote is Ownable {
         return false;
     }
 
-    function _hasVoted(string memory voterCode) internal view returns (bool) {
+    function hasVoted(string memory voterCode) public view returns (bool) {
         return bytes(votes[voterCode]).length > 0;
     }
 
@@ -43,7 +41,7 @@ contract Vote is Ownable {
         onlyOwner
         returns (string memory)
     {
-        require(_hasVoted(voterCode), "Vote: VoterCode not found");
+        require(hasVoted(voterCode), "Vote: VoterCode not found");
         return votes[voterCode];
     }
 
@@ -53,7 +51,7 @@ contract Vote is Ownable {
         onlyOwner
         returns (uint32)
     {
-        require(_isValidOption(option), "Vote: Value sent is not an Option");
+        require(isValidOption(option), "Vote: Value sent is not an Option");
         return voteCount[option];
     }
 
